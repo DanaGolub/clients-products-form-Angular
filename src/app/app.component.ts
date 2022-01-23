@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
   <productForm [callParentFromProduct]="productFuncRef"></productForm >
   {{dataFromClient}}
   {{dataFromProduct}}
+
   `
 })
 export class AppComponent {
@@ -18,6 +19,7 @@ export class AppComponent {
   operations!:    Array<any>;
   dataFromClient!: string;
   dataFromProduct!: string;
+  orderedProductsArray!: Array<any>;
   
 
   // This function is called by the Angular framework after
@@ -25,6 +27,7 @@ export class AppComponent {
   public ngOnInit() { 
     this.clientFuncRef = this.clientCallBackFunction.bind(this);
     this.productFuncRef = this.productCallBackFunction.bind(this);
+    this.orderedProductsArray = [];
   }
 
   // This function can be called by child.
@@ -35,9 +38,27 @@ export class AppComponent {
           "StreetAddress: " + streetAddress;
   }
 
-  public productCallBackFunction(quantity:number, productName:string) {
-    this.dataFromProduct = 
-          "Product Chosen: " + productName + " " +
-          "quantity: " + quantity;
-  }
+  public productCallBackFunction(quantity:number, productName:string, productsToAdd: Array<any>) {
+    // this.dataFromProduct = 
+    //       "Product Chosen: " + productName + " " +
+    //       "quantity: " + quantity;
+    // this.arrayFromProduct = this.arrayFromProduct.push()
+    // console.log(productsToAdd)
+
+    // this.orderedProductsArray = [];
+    // this.orderedProductsArray.push(productsToAdd)
+    // console.log(this.orderedProductsArray)
+
+    for (var i = 0; i < productsToAdd.length; i++) {
+      if (productsToAdd[i].item == productName) {
+          let newItem = {
+          'item': productsToAdd[i].item,
+          'price': productsToAdd[i].price,
+          'num': quantity
+        }
+
+        this.orderedProductsArray.push(newItem)
+      }
 }
+console.log(this.orderedProductsArray)
+}}
