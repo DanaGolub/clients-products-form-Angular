@@ -35,10 +35,10 @@ export class ProductComponent {
     constructor() {
         // this.items = [];
         this.productsToAdd =
-            [{ 'item': 'Apples', 'price': 3.99 },
-            { 'item': 'Peaches', 'price': 4.99 },
-            { 'item': 'Pears', 'price': 2.99 },
-            { 'item': 'Plums', 'price': 5.99 },
+            [{ 'item': 'Apples', 'price': 3.00 },
+            { 'item': 'Peaches', 'price': 4.00 },
+            { 'item': 'Pears', 'price': 2.00 },
+            { 'item': 'Plums', 'price': 5.00 },
             ];
     }
 
