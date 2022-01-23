@@ -12,11 +12,13 @@ import { Component } from '@angular/core';
   `
 })
 export class AppComponent {
+
   clientFuncRef!: Function;
   productFuncRef!: Function;
   operations!:    Array<any>;
   dataFromClient!: string;
   dataFromProduct!: string;
+  
 
   // This function is called by the Angular framework after
   // the constructor executes.
@@ -26,15 +28,16 @@ export class AppComponent {
   }
 
   // This function can be called by child.
-  public clientCallBackFunction(streetAddress:string, city:string) {
+  public clientCallBackFunction(firstName:string, lastName:string, streetAddress:string) {
     this.dataFromClient = 
-          "Street Address: " + streetAddress + " " +
-          "City: " + city;
+          "FName: " + firstName + "   " +
+          "LName: " + lastName + "   " +
+          "StreetAddress: " + streetAddress;
   }
 
-  public productCallBackFunction(streetAddress:string, city:string) {
+  public productCallBackFunction(quantity:number, productName:string) {
     this.dataFromProduct = 
-          "Street Address: " + streetAddress + " " +
-          "City: " + city;
+          "Product Chosen: " + productName + " " +
+          "quantity: " + quantity;
   }
 }
