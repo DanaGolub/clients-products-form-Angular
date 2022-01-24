@@ -29,11 +29,9 @@ export class ProductComponent {
 
     //////////////////////////
     quantityOfItems!: any;
-    // items: Array<any>;
     productsToAdd: Array<any>;
 
     constructor() {
-        // this.items = [];
         this.productsToAdd =
             [{ 'item': 'Apples', 'price': 3.00 },
             { 'item': 'Peaches', 'price': 4.00 },

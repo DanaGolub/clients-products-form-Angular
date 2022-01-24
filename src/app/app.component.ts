@@ -39,11 +39,33 @@ import { Component } from '@angular/core';
       &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{orderedProduct.price}} 
       </td>
       <td>
-      &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{orderedProduct.totalToPay}} 
+      &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{orderedProduct.totalSingleOrder}} 
       </td>
       <td>
       &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='delete' (click)=removeItem(orderedProduct)>
       </td>
+      </tr>
+    </table>
+  
+    <table>
+      <!-- this table should be hidden if there's no items in the new product array -->
+      <tr>
+        <td>Subtotal</td>
+        <td> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;{{orderedProduct.totalFullOrderNoTax}}</td>
+      </tr>
+      <tr>
+        <td>Taxes 7%</td>
+        <td></td>
+        <td></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;{{orderedProduct.totalTaxAmount}}</td>
+      </tr>
+      <tr>
+        <td>Total</td>
+        <td></td>
+        <td></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;{{orderedProduct.totalFullOrderWithTax}}</td>
       </tr>
     </table>
 
@@ -59,7 +81,7 @@ export class AppComponent {
 
   clientFuncRef!: Function;
   productFuncRef!: Function;
-  operations!:    Array<any>;
+  operations!: Array<any>;
   dataFromClient!: string;
   dataFromProduct!: string;
   orderedProductsArray!: Array<any>;
@@ -72,35 +94,46 @@ export class AppComponent {
     }
   }
 
-  public ngOnInit() { 
+  public ngOnInit() {
     this.clientFuncRef = this.clientCallBackFunction.bind(this);
     this.productFuncRef = this.productCallBackFunction.bind(this);
     this.orderedProductsArray = [];
   }
 
-  // This function can be called by child.
-  public clientCallBackFunction(firstName:string, lastName:string, streetAddress:string) {
-    this.dataFromClient = 
-          "Order for " + firstName + " " + lastName + " " + "at: " + "StreetAddress: " + streetAddress;
+  public clientCallBackFunction(firstName: string, lastName: string, streetAddress: string) {
+    this.dataFromClient =
+      "Order for " + firstName + " " + lastName + " " + "at: " + "StreetAddress: " + streetAddress;
   }
 
-  public productCallBackFunction(quantity:number, productName:string, productsToAdd: Array<any>) {
+  public productCallBackFunction(quantity: number, productName: string, productsToAdd: Array<any>) {
 
     for (var i = 0; i < productsToAdd.length; i++) {
+      let totalFullOrderNoTax = 0
+      let tax = 0.07
+      let totalTaxAmount = 0
+      let totalFullOrderWithTax = 0
       if (productsToAdd[i].item == productName) {
-          let newItem = {
+
+        let totalSingleOrder = productsToAdd[i].price * quantity
+        totalFullOrderNoTax += totalSingleOrder
+        totalTaxAmount = totalFullOrderNoTax * tax
+        totalFullOrderWithTax = totalFullOrderNoTax + totalTaxAmount
+
+        let newItem = {
           'item': productsToAdd[i].item,
           'price': productsToAdd[i].price,
           'num': quantity,
-          'totalToPay': productsToAdd[i].price * quantity, 
+          'totalSingleOrder': totalSingleOrder,
+          'totalFullOrderNoTax': totalSingleOrder,
           'id': i + 1,
+          'totalTaxAmount': totalTaxAmount,
+          'totalFullOrderWithTax': totalFullOrderWithTax
         }
-
         this.orderedProductsArray.push(newItem)
       }
-}
-console.log(this.orderedProductsArray)
-}
+    }
+    console.log(this.orderedProductsArray)
+  }
 
 
 }
